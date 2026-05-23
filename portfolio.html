@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>插畫接案 — 桌遊美術・角色設計・插畫地圖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0e1a;
+    --ink-soft: #151c30;
+    --paper: #f5f0e8;
+    --warm-mid: #1a2240;
+    --accent: #f0c040;
+    --accent-soft: #f8d870;
+    --teal: #a8c8e8;
+    --gold: #f0c040;
+    --muted: #7a90b8;
+    --border: #2a3858;
+    --star-bright: #ffffff;
+    --text-on-dark: #dde8f8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--text-on-dark);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* Nebula glow */
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: 10%; left: 30%;
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(240,192,64,0.07) 0%, transparent 70%);
+  }
+  #hero::after {
+    content: '';
+    position: absolute;
+    bottom: 15%; right: 20%;
+    width: 400px; height: 300px;
+    background: radial-gradient(ellipse, rgba(100,150,220,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Starry canvas behind everything */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse at 20% 30%, #1a2a5a 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, #0d1a3a 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 10%, #1e1040 0%, transparent 40%),
+      linear-gradient(180deg, #050a18 0%, #0a1228 40%, #060c1e 100%);
+  }
+
+  /* Animated stars layer */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 25% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 38% 22%, rgba(200,220,255,0.7) 0%, transparent 100%),
+      radial-gradient(2px 2px at 52% 5%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 67% 18%, rgba(255,240,200,0.8) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 78% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 25%, rgba(200,220,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 18% 55%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 33% 48%, rgba(255,240,200,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 62%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 38%, rgba(200,220,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 55%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(2px 2px at 85% 42%, rgba(255,240,200,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 60%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 8% 72%, rgba(200,220,255,0.8) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 22% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 75%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,240,200,0.7) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 78%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 82% 88%, rgba(200,220,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 75%, rgba(255,255,255,0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 92%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 48% 95%, rgba(255,240,200,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 95%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 35%, rgba(200,220,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 63% 28%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(2px 2px at 90% 35%, rgba(255,240,200,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    animation: twinkle 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0%   { opacity: 0.7; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+
+  /* Shooting star */
+  @keyframes shoot {
+    0%   { transform: translateX(0) translateY(0) rotate(-35deg); opacity: 1; width: 0; }
+    5%   { width: 120px; opacity: 1; }
+    30%  { transform: translateX(300px) translateY(180px) rotate(-35deg); opacity: 0; width: 120px; }
+    100% { transform: translateX(300px) translateY(180px) rotate(-35deg); opacity: 0; width: 0; }
+  }
+
+  .shooting-star {
+    position: fixed;
+    top: 12%;
+    left: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(240,220,160,0.9), rgba(255,255,255,0));
+    border-radius: 1px;
+    animation: shoot 8s ease-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .shooting-star:nth-child(2) {
+    top: 25%;
+    left: 60%;
+    animation-delay: 4s;
+    animation-duration: 10s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(5, 10, 24, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 16px rgba(240,192,64,0.5);
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.83rem;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(100px, 16vw, 220px);
+    color: rgba(255,255,255,0.025);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero-text {
+    padding: 0 48px 0 10vw;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(240,192,64,0.5);
+    padding: 4px 14px;
+    text-shadow: 0 0 12px rgba(240,192,64,0.4);
+    margin-bottom: 28px;
+  }
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 24px;
+    color: var(--text-on-dark);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-family: 'DM Serif Display', serif;
+  }
+  .hero-desc {
+    color: rgba(232,234,245,0.7);
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 2.1;
+    margin-bottom: 16px;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+  .hero-badge {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    border: 1px solid rgba(168,200,232,0.3);
+    padding: 3px 12px;
+    opacity: 0.9;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(240,192,64,0.9);
+    color: #0a0e1a;
+    text-decoration: none;
+    padding: 14px 32px;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .hero-cta:hover { background: #fff; color: #0a0e1a; transform: translateY(-2px); box-shadow: 0 0 24px rgba(240,192,64,0.35); }
+  .hero-cta-arrow { transition: transform 0.2s; }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+
+  /* Hero image mosaic */
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+    padding: 0 6vw 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 8px;
+  }
+  .hero-img-wrap {
+    overflow: hidden;
+    position: relative;
+    background: rgba(20,30,60,0.8);
+  }
+  .hero-img-wrap:nth-child(1) { grid-column: 1/2; grid-row: 1/2; }
+  .hero-img-wrap:nth-child(2) { grid-column: 2/3; grid-row: 1/3; }
+  .hero-img-wrap:nth-child(3) { grid-column: 1/2; grid-row: 2/3; }
+  .hero-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+    display: block;
+  }
+  .hero-img-wrap:hover img { transform: scale(1.06); }
+  .hero-img-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(28,26,22,0.75), transparent);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: #fff;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .hero-img-wrap:hover .hero-img-label { opacity: 1; }
+
+  /* SECTION COMMON */
+  section { padding: 96px 10vw; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .section-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 4.5rem;
+    color: rgba(232,149,106,0.12);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-title-group { flex: 1; }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .section-title {
+    color: var(--text-on-dark);
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-weight: 700;
+  }
+
+  /* WORKS */
+  #works { background: rgba(10,14,26,0.6); backdrop-filter: blur(2px); }
+
+  /* Featured map */
+  .works-featured {
+    margin-bottom: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .work-featured-item {
+    position: relative;
+    overflow: hidden;
+    background: rgba(15,22,48,0.6);
+    height: 340px;
+  }
+  .work-featured-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+    display: block;
+  }
+  .work-featured-item:hover img { transform: scale(1.04); }
+  .work-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(28,26,22,0.8) 0%, transparent 55%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .work-featured-item:hover .work-overlay { opacity: 1; }
+  .work-overlay-cat {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 4px;
+  }
+  .work-overlay-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .work-overlay-client {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* Work badge always visible on featured */
+  .work-badge {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(240,192,64,0.9);
+    color: #0a0e1a;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    padding: 3px 10px;
+    text-transform: uppercase;
+  }
+
+  /* Grid works */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    background: rgba(15,22,48,0.6);
+    height: 240px;
+  }
+  .work-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+    display: block;
+  }
+  .work-item:hover img { transform: scale(1.06); }
+  .work-item:hover .work-overlay { opacity: 1; }
+
+  .works-subhead {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.85rem;
+    color: rgba(136,152,192,0.8);
+    letter-spacing: 0.15em;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* CAPABILITIES */
+  #capabilities { background: var(--ink); color: var(--paper); }
+  #capabilities .section-title { color: var(--text-on-dark); }
+  #capabilities .section-eyebrow { color: var(--accent-soft); }
+  #capabilities .section-num { color: rgba(245,240,232,0.05); }
+
+  .caps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(245,240,232,0.08);
+  }
+  .cap-item {
+    background: var(--ink);
+    padding: 44px 32px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cap-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+  .cap-item:hover { background: #252318; }
+  .cap-item:hover::before { width: 100%; }
+  .cap-icon { width: 36px; height: 36px; margin-bottom: 18px; opacity: 0.75; }
+  .cap-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--paper);
+    margin-bottom: 10px;
+  }
+  .cap-desc { font-size: 0.83rem; color: rgba(245,240,232,0.5); line-height: 1.9; }
+  .cap-tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .cap-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-soft);
+    border: 1px solid rgba(200,90,42,0.3);
+    padding: 2px 9px;
+  }
+  /* Gov client badge */
+  .cap-gov {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(168,200,232,0.5);
+    border: 1px solid rgba(168,200,232,0.15);
+    padding: 2px 8px;
+  }
+
+  /* PROCESS */
+  #process { background: rgba(20,30,60,0.7); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 27px; left: 14%; right: 14%;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    z-index: 0;
+  }
+  .process-step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+  .step-num {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: rgba(15,22,48,0.9);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(240,192,64,0.6);
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+  }
+  .process-step:hover .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step-title { font-family: 'Noto Serif TC', serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; color: var(--text-on-dark); }
+  .step-desc { font-size: 0.8rem; color: rgba(136,152,192,0.8); line-height: 1.8; }
+
+  /* PRICE */
+  #price { background: rgba(8,12,22,0.5); }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); }
+  .price-card { background: rgba(15,22,48,0.8); border: 1px solid rgba(255,255,255,0.07); padding: 40px 28px; transition: transform 0.3s; }
+  .price-card.featured { background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.25); color: var(--paper); box-shadow: 0 0 32px rgba(240,192,64,0.08); }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-card-tag { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 14px; }
+  .price-card.featured .price-card-tag { color: var(--accent-soft); }
+  .price-card-title { font-family: 'Noto Serif TC', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: var(--text-on-dark); }
+  .price-card.featured .price-card-title { color: var(--paper); }
+  .divider { width: 36px; height: 1px; background: rgba(255,255,255,0.1); margin: 14px 0; }
+  .price-card.featured .divider { background: rgba(245,240,232,0.2); }
+  .price-range { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; color: var(--accent); margin-bottom: 6px; text-shadow: 0 0 14px rgba(240,192,64,0.5); }
+  .price-card.featured .price-range { color: var(--accent-soft); }
+  .price-note { font-size: 0.75rem; color: rgba(136,152,192,0.7); margin-bottom: 20px; }
+  .price-card.featured .price-note { color: rgba(245,240,232,0.45); }
+  .price-list { list-style: none; font-size: 0.8rem; line-height: 2.2; color: rgba(136,152,192,0.8); }
+  .price-card.featured .price-list { color: rgba(245,240,232,0.6); }
+  .price-list li::before { content: '—  '; color: var(--accent); font-size: 0.75em; }
+  .price-card.featured .price-list li::before { color: var(--accent-soft); }
+  .price-disclaimer { margin-top: 28px; font-size: 0.76rem; color: rgba(136,152,192,0.65); text-align: center; line-height: 2; }
+
+  /* CONTACT */
+  #contact { background: rgba(15,22,48,0.75); }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 72px; align-items: start; }
+  .contact-info-title { font-family: 'Noto Serif TC', serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 14px; color: var(--text-on-dark); }
+  .contact-info-desc { font-size: 0.86rem; color: rgba(136,152,192,0.8); line-height: 2.1; margin-bottom: 32px; }
+  .contact-note { padding: 18px 22px; background: rgba(10,14,26,0.6); border-left: 3px solid var(--accent); font-size: 0.8rem; color: rgba(136,152,192,0.8); line-height: 1.9; }
+  .contact-note strong { color: var(--text-on-dark); font-weight: 500; }
+
+  .commission-form { display: flex; flex-direction: column; gap: 18px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(136,152,192,0.8); font-weight: 500; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(10,14,26,0.7);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 11px 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.86rem;
+    color: var(--text-on-dark);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(240,192,64,0.1); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7060' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .btn-submit {
+    background: var(--accent); color: #0a0e1a; border: none;
+    padding: 15px 36px;
+    font-family: 'Noto Sans TC', sans-serif; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em;
+    cursor: pointer; transition: background 0.2s, transform 0.2s;
+  }
+  .btn-submit:hover { background: #fff; color: #0a0e1a; transform: translateY(-2px); box-shadow: 0 0 20px rgba(240,192,64,0.3); }
+  .form-submit { display: flex; align-items: center; gap: 16px; margin-top: 6px; }
+  .submit-note { font-size: 0.73rem; color: rgba(136,152,192,0.7); line-height: 1.6; }
+  .form-success {
+    display: none; padding: 24px;
+    background: rgba(10,14,26,0.8); border: 1px solid var(--teal);
+    color: var(--teal); font-size: 0.88rem; text-align: center; line-height: 2;
+  }
+
+  /* FOOTER */
+  footer {
+    background: rgba(3,6,14,0.95); color: rgba(136,152,192,0.5);
+    padding: 44px 10vw;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.76rem; letter-spacing: 0.05em;
+  }
+  .footer-logo { font-family: 'Noto Serif TC', serif; font-size: 0.95rem; color: var(--text-on-dark); font-weight: 700; }
+  .footer-links { display: flex; gap: 24px; list-style: none; }
+  .footer-links a { color: rgba(136,152,192,0.5); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-soft); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp 0.65s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: 0.1s; }
+  .fade-up:nth-child(2) { animation-delay: 0.22s; }
+  .fade-up:nth-child(3) { animation-delay: 0.34s; }
+  .fade-up:nth-child(4) { animation-delay: 0.46s; }
+  .fade-up:nth-child(5) { animation-delay: 0.58s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 960px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    #hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .hero-text { padding: 0; margin-bottom: 40px; }
+    .hero-visual { padding: 0; }
+    section { padding: 72px 6vw; }
+    .works-featured { grid-template-columns: 1fr; }
+    .work-featured-item { height: 260px; }
+    .works-grid { grid-template-columns: 1fr 1fr; }
+    .caps-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .process-steps::before { display: none; }
+    .price-grid { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 18px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .works-grid { grid-template-columns: 1fr; }
+    .hero-visual { grid-template-rows: 180px 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shooting stars -->
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">插畫接案</a>
+  <ul class="nav-links">
+    <li><a href="#works">作品集</a></li>
+    <li><a href="#capabilities">服務項目</a></li>
+    <li><a href="#process">合作流程</a></li>
+    <li><a href="#price">費用參考</a></li>
+    <li><a href="#contact">委託詢問</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">ILLUSTRATE</div>
+
+  <div class="hero-text">
+    <div class="hero-tag fade-up">Freelance Illustrator</div>
+    <h1 class="hero-title fade-up">
+      桌遊美術<br>
+      插畫地圖<br>
+      <em>&amp;</em> 角色設計
+    </h1>
+    <p class="hero-desc fade-up">
+      政府標案・出版社・品牌業主皆有合作實績。<br>
+      從角色 IP 建立、整套卡牌美術到插畫地圖，提供完整的插畫執行服務。
+    </p>
+    <div class="hero-badges fade-up">
+      <span class="hero-badge">新北市客家局</span>
+      <span class="hero-badge">BGL 勁根地</span>
+      <span class="hero-badge">野灣野生動物保育協會</span>
+    </div>
+    <a href="#contact" class="hero-cta fade-up">
+      開始委託詢問
+      <span class="hero-cta-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-img-wrap">
+      <img src="work_chaibao_adventure.jpeg" alt="柴寶探險隊桌遊">
+      <div class="hero-img-label">Board Game · 柴寶探險隊</div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="work_map_dongyin.jpeg" alt="東引插畫地圖">
+      <div class="hero-img-label">Map · 東引景點導覽圖</div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="work_card_writing1.jpeg" alt="文字史卡牌">
+      <div class="hero-img-label">Card Design · 文字史卡牌</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">Portfolio</div>
+      <h2 class="section-title">精選作品</h2>
+    </div>
+  </div>
+
+  <!-- Featured: Maps -->
+  <div class="works-subhead">插畫地圖</div>
+  <div class="works-featured">
+    <div class="work-featured-item">
+      <img src="work_map_dongyin.jpeg" alt="東引景點插畫地圖">
+      <div class="work-badge">Map Illustration</div>
+      <div class="work-overlay">
+        <div class="work-overlay-cat">插畫地圖</div>
+        <div class="work-overlay-title">東引景點插畫導覽圖</div>
+        <div class="work-overlay-client">馬祖國家風景區管理處</div>
+      </div>
+    </div>
+    <div class="work-featured-item">
+      <img src="work_map_matsu.jpeg" alt="馬祖東引街道圖">
+      <div class="work-badge">Map Illustration</div>
+      <div class="work-overlay">
+        <div class="work-overlay-cat">插畫地圖</div>
+        <div class="work-overlay-title">馬祖東引街道插畫導覽圖</div>
+        <div class="work-overlay-client">馬祖觀光局產業聯盟</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board Games -->
+  <div class="works-subhead" style="margin-top:48px">桌遊美術</div>
+  <div class="works-grid">
+    <div class="work-item">
+      <img src="work_chaibao_adventure.jpeg" alt="柴寶探險隊">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">政府標案・桌遊</div>
+        <div class="work-overlay-title">柴寶探險隊</div>
+        <div class="work-overlay-client">新北市政府客家事務局 × BGL勁根地</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_chaibao_phantom.jpeg" alt="柴寶伏魔錄">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">政府標案・桌遊</div>
+        <div class="work-overlay-title">柴寶伏魔錄</div>
+        <div class="work-overlay-client">新北市政府客家事務局 × BGL勁根地</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_wildlife.jpeg" alt="野保救援隊">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">桌遊美術</div>
+        <div class="work-overlay-title">野保救援隊</div>
+        <div class="work-overlay-client">野灣野生動物保育協會（未上市）</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_boardgame_test.jpeg" alt="試個好遊戲">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">商業出版・桌遊</div>
+        <div class="work-overlay-title">試個好遊戲</div>
+        <div class="work-overlay-client">BGL 勁根地 × Asmadi Games</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_firefly.jpeg" alt="螢火蟲物語">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">桌遊・概念設計</div>
+        <div class="work-overlay-title">螢火蟲物語</div>
+        <div class="work-overlay-client">新北市客家薪傳協會（概念圖）</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_card_writing1.jpeg" alt="文字史卡牌">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">卡牌設計</div>
+        <div class="work-overlay-title">文字發明史卡牌遊戲</div>
+        <div class="work-overlay-client">桌遊卡牌美術</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posters & Others -->
+  <div class="works-subhead" style="margin-top:48px">海報・角色・圖卡</div>
+  <div class="works-grid">
+    <div class="work-item">
+      <img src="work_poster_newyear.jpeg" alt="忘年會海報">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">活動海報</div>
+        <div class="work-overlay-title">2025 忘年會主視覺</div>
+        <div class="work-overlay-client">臺中榮民總醫院麻醉部</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_poster_chuangshi.jpeg" alt="創市祭">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">活動插畫</div>
+        <div class="work-overlay-title">創市祭活動主視覺</div>
+        <div class="work-overlay-client">台中社會創新實驗基地</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_sesame1.jpeg" alt="芝麻先生圖卡">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">品牌插畫・教育圖卡</div>
+        <div class="work-overlay-title">芝麻先生品牌圖卡系列</div>
+        <div class="work-overlay-client">胡麻學堂 Mr. Sesame</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_poster_liuchuan.jpeg" alt="柳川水環境教育館">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">活動海報・環境教育</div>
+        <div class="work-overlay-title">柳川水環境教育館志工培訓</div>
+        <div class="work-overlay-client">臺中市政府水利局</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_poster_hardware.jpeg" alt="五金廠商創客育樂營">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">活動海報</div>
+        <div class="work-overlay-title">五金廠商創客育樂營</div>
+        <div class="work-overlay-client">臺中市自由路五金電料商圈</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <img src="work_char_god.jpeg" alt="桌遊神明角色">
+      <div class="work-overlay">
+        <div class="work-overlay-cat">角色設計</div>
+        <div class="work-overlay-title">桌遊神明角色設計</div>
+        <div class="work-overlay-client">角色 IP 插畫</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">Services</div>
+      <h2 class="section-title">服務項目</h2>
+    </div>
+  </div>
+
+  <div class="caps-grid">
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="24" height="30" rx="2" stroke="#e8956a" stroke-width="1.4"/>
+        <rect x="9" y="2" width="24" height="30" rx="2" stroke="#e8956a" stroke-width="1.4"/>
+        <line x1="15" y1="13" x2="26" y2="13" stroke="#e8956a" stroke-width="1.2"/>
+        <line x1="15" y1="18" x2="26" y2="18" stroke="#e8956a" stroke-width="1.2"/>
+        <circle cx="12" cy="13" r="2" fill="#e8956a"/>
+        <circle cx="12" cy="18" r="2" fill="#c85a2a"/>
+      </svg>
+      <div class="cap-title">桌遊卡牌美術</div>
+      <div class="cap-desc">角色 IP 設計到整套卡牌美術統籌，熟悉桌遊版面結構與印刷規格，有完整政府標案與商業出版實績。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">角色設計</span>
+        <span class="cap-tag">系列卡面</span>
+        <span class="cap-tag">美術統籌</span>
+        <span class="cap-tag">印刷規格</span>
+      </div>
+      <div class="cap-gov">實績：新北市客家局・BGL勁根地・野灣保育協會</div>
+    </div>
+
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="14" stroke="#e8956a" stroke-width="1.4"/>
+        <path d="M6,18 Q12,12 18,18 Q24,24 30,18" stroke="#e8956a" stroke-width="1.2" fill="none"/>
+        <circle cx="13" cy="14" r="2" fill="#c85a2a"/>
+        <circle cx="23" cy="22" r="2" fill="#e8956a"/>
+        <line x1="18" y1="4" x2="18" y2="32" stroke="#e8956a" stroke-width="1" opacity="0.3"/>
+        <line x1="4" y1="18" x2="32" y2="18" stroke="#e8956a" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <div class="cap-title">插畫導覽地圖</div>
+      <div class="cap-desc">觀光景點・商業空間・校園社區等插畫地圖，兼顧資訊清晰與場景氛圍，有縣市政府與觀光局執行案例。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">觀光地圖</span>
+        <span class="cap-tag">場地導覽</span>
+        <span class="cap-tag">景點插畫</span>
+      </div>
+      <div class="cap-gov">實績：馬祖觀光局・馬祖國家風景區管理處</div>
+    </div>
+
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="12" r="7" stroke="#e8956a" stroke-width="1.4"/>
+        <circle cx="18" cy="12" r="3" fill="#e8956a"/>
+        <path d="M10,26 Q18,20 26,26 L28,36 L8,36Z" stroke="#e8956a" stroke-width="1.4" fill="none"/>
+      </svg>
+      <div class="cap-title">角色 IP 設計</div>
+      <div class="cap-desc">從零建立品牌角色，延伸至桌遊、海報、商品、社群各場景，「柴寶」系列為代表作，已授權多款政府桌遊。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">品牌角色</span>
+        <span class="cap-tag">吉祥物</span>
+        <span class="cap-tag">系列延伸</span>
+      </div>
+      <div class="cap-gov">代表 IP：柴寶（Chai-Pao）系列</div>
+    </div>
+
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="28" height="24" rx="2" stroke="#e8956a" stroke-width="1.4"/>
+        <line x1="4" y1="14" x2="32" y2="14" stroke="#e8956a" stroke-width="1" opacity="0.4"/>
+        <path d="M10,22 L14,18 L18,21 L23,16 L30,20" stroke="#e8956a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <circle cx="10" cy="22" r="1.5" fill="#c85a2a"/>
+        <circle cx="23" cy="16" r="1.5" fill="#e8956a"/>
+      </svg>
+      <div class="cap-title">活動海報設計</div>
+      <div class="cap-desc">節慶・年會・展覽・政府活動等主視覺插畫，從人物構圖到場景氛圍一手包辦，有政府機關與企業客戶實績。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">主視覺</span>
+        <span class="cap-tag">年會海報</span>
+        <span class="cap-tag">節慶設計</span>
+      </div>
+      <div class="cap-gov">實績：臺中市政府水利局・台中社會創新實驗基地</div>
+    </div>
+
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="28" height="28" rx="2" stroke="#e8956a" stroke-width="1.4"/>
+        <rect x="10" y="10" width="7" height="7" rx="1" stroke="#e8956a" stroke-width="1.2"/>
+        <rect x="10" y="21" width="7" height="7" rx="1" stroke="#e8956a" stroke-width="1.2"/>
+        <line x1="21" y1="12" x2="30" y2="12" stroke="#e8956a" stroke-width="1.2"/>
+        <line x1="21" y1="16" x2="28" y2="16" stroke="#e8956a" stroke-width="1.2"/>
+        <line x1="21" y1="23" x2="30" y2="23" stroke="#e8956a" stroke-width="1.2"/>
+        <line x1="21" y1="27" x2="27" y2="27" stroke="#e8956a" stroke-width="1.2"/>
+      </svg>
+      <div class="cap-title">教育圖文教材</div>
+      <div class="cap-desc">兒童教材・知識性圖卡・品牌教育內容，擅長將複雜資訊以插畫化為易讀易懂的視覺呈現，適合出版社・政府・NGO 合作。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">兒童讀物</span>
+        <span class="cap-tag">知識圖卡</span>
+        <span class="cap-tag">環境教育</span>
+      </div>
+      <div class="cap-gov">實績：胡麻學堂・螢火蟲生態教材</div>
+    </div>
+
+    <div class="cap-item">
+      <svg class="cap-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="28" height="28" rx="2" stroke="#e8956a" stroke-width="1.4"/>
+        <line x1="4" y1="14" x2="32" y2="14" stroke="#e8956a" stroke-width="1" opacity="0.4"/>
+        <line x1="14" y1="4" x2="14" y2="32" stroke="#e8956a" stroke-width="1" opacity="0.4"/>
+        <circle cx="9" cy="9" r="2" fill="#c85a2a"/>
+        <circle cx="23" cy="9" r="2" fill="#e8956a"/>
+        <circle cx="9" cy="23" r="2" fill="#e8956a"/>
+      </svg>
+      <div class="cap-title">書冊封面・版面設計</div>
+      <div class="cap-desc">書籍封面・文宣品・簡報・報告書圖文整合，具備完整排版與印刷製程知識，可交付印刷就緒的完稿檔。</div>
+      <div class="cap-tags">
+        <span class="cap-tag">書封設計</span>
+        <span class="cap-tag">文宣品</span>
+        <span class="cap-tag">印刷完稿</span>
+      </div>
+      <div class="cap-gov">實績：馬祖觀光局出版品・勁根地出版社</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">合作流程</h2>
+    </div>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">1</div>
+      <div class="step-title">填寫委託表單</div>
+      <div class="step-desc">說明用途、風格偏好、預算範圍，附上參考圖或現有素材。</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-title">確認需求與報價</div>
+      <div class="step-desc">收到詢問後 2 個工作天內回覆，確認細節後提供報價與時程。</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-title">草稿確認</div>
+      <div class="step-desc">提供初稿草圖供確認，溝通調整方向後進入正稿繪製。</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">4</div>
+      <div class="step-title">交稿完成</div>
+      <div class="step-desc">依約定格式（AI / PDF / PNG）交付正稿，含一次修改機會。</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section id="price">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">Pricing Reference</div>
+      <h2 class="section-title">費用參考</h2>
+    </div>
+  </div>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-card-tag">Single Illustration</div>
+      <div class="price-card-title">單張插畫</div>
+      <div class="divider"></div>
+      <div class="price-range">NT$ 3,000 起</div>
+      <div class="price-note">依複雜度、角色數量調整</div>
+      <ul class="price-list">
+        <li>角色插圖（單人）</li>
+        <li>場景插圖</li>
+        <li>吉祥物設計（含3個角度）</li>
+        <li>社群圖卡設計</li>
+        <li>活動海報</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
+      <div class="price-card-tag">Board Game · IP Design</div>
+      <div class="price-card-title">桌遊美術・角色 IP</div>
+      <div class="divider"></div>
+      <div class="price-range">依規模議價</div>
+      <div class="price-note">歡迎提供完整需求後詢價</div>
+      <ul class="price-list">
+        <li>整套桌遊卡牌美術</li>
+        <li>角色 IP 設計 + 系列延伸</li>
+        <li>遊戲規則書插畫</li>
+        <li>盒面主視覺設計</li>
+        <li>桌遊周邊商品設計</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="price-card-tag">Map · Publication</div>
+      <div class="price-card-title">插畫地圖・出版品</div>
+      <div class="divider"></div>
+      <div class="price-range">NT$ 15,000 起</div>
+      <div class="price-note">依資訊量與尺寸調整</div>
+      <ul class="price-list">
+        <li>觀光景點插畫地圖</li>
+        <li>場地導覽圖</li>
+        <li>書冊封面設計</li>
+        <li>政府文宣品插畫</li>
+        <li>教育出版插畫</li>
+      </ul>
+    </div>
+  </div>
+  <p class="price-disclaimer">
+    以上為參考價格，實際報價依專案規模、交件時程、修改次數等因素調整。<br>
+    歡迎直接附上需求說明詢問報價，無論案子大小都歡迎詢問。
+  </p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-group">
+      <div class="section-eyebrow">Commission Request</div>
+      <h2 class="section-title">委託詢問</h2>
+    </div>
+  </div>
+  <div class="contact-layout">
+    <div class="contact-info">
+      <div class="contact-info-title">說說你的想法</div>
+      <p class="contact-info-desc">
+        不需要準備完整的設計規格，只要簡單說明用途和大致方向就好。<br>
+        收到表單後 2 個工作天內回覆，一起討論可行的方案。
+      </p>
+      <div class="contact-note">
+        <strong>小提醒</strong><br>
+        如果有參考圖或現有品牌素材，歡迎一起說明，有助於更快進入報價討論。<br><br>
+        急件（7 天內交稿）另有加急費用，請在備註欄說明。
+      </div>
+    </div>
+    <div>
+      <form class="commission-form" id="commissionForm"
+        action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="插畫委託詢問">
+        <input type="hidden" name="to" value="flyfishayao@gmail.com">
+        <input type="checkbox" name="botcheck" style="display:none">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">姓名 / 公司名稱</label>
+            <input type="text" id="name" name="name" placeholder="王小明" required>
+          </div>
+          <div class="form-group">
+            <label for="email">電子信箱</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="category">委託類型</label>
+          <select id="category" name="category" required>
+            <option value="" disabled selected>請選擇</option>
+            <option>桌遊卡牌美術</option>
+            <option>插畫導覽地圖</option>
+            <option>角色 IP 設計</option>
+            <option>活動海報設計</option>
+            <option>教育圖文教材・兒童讀物</option>
+            <option>書冊封面・版面設計</option>
+            <option>其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="purpose">用途說明</label>
+          <input type="text" id="purpose" name="purpose" placeholder="例：桌遊眾籌專案、政府活動文宣、品牌吉祥物設計...">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="budget">預算範圍</label>
+            <select id="budget" name="budget">
+              <option value="" disabled selected>請選擇</option>
+              <option>NT$ 3,000 – 8,000</option>
+              <option>NT$ 8,000 – 20,000</option>
+              <option>NT$ 20,000 – 50,000</option>
+              <option>NT$ 50,000 以上</option>
+              <option>尚未確定，需要先詢價</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deadline">希望交件日期</label>
+            <input type="date" id="deadline" name="deadline">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">需求說明</label>
+          <textarea id="message" name="message" placeholder="請簡單描述想法、風格偏好、數量、是否有參考圖等，越詳細越好。" required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-submit">送出委託詢問</button>
+          <span class="submit-note">送出後 2 個工作天內回覆</span>
+        </div>
+      </form>
+      <div class="form-success" id="formSuccess">
+        感謝你的詢問！<br>
+        已收到委託需求，將於 2 個工作天內以電子信箱回覆。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">插畫接案</div>
+  <ul class="footer-links">
+    <li><a href="#works">作品集</a></li>
+    <li><a href="#capabilities">服務項目</a></li>
+    <li><a href="#contact">委託詢問</a></li>
+  </ul>
+  <div>© 2025 版權所有</div>
+</footer>
+
+<script>
+  const form = document.getElementById('commissionForm');
+  const successMsg = document.getElementById('formSuccess');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = '傳送中...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(form)
+      });
+      const data = await res.json();
+      if (data.success) {
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+      } else {
+        btn.textContent = '送出失敗，請重試';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = '網路錯誤，請重試';
+      btn.disabled = false;
+    }
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.cap-item, .process-step, .price-card, .work-item, .work-featured-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
